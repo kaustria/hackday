@@ -12,7 +12,7 @@ import http from 'http';
 // Populate databases with sample data
 if (config.seedDB) { require('./config/seed'); }
 
-// Setup server
+// Setup server`````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 var app = express();
 var server = http.createServer(app);
 var socketio = require('socket.io')(server, {

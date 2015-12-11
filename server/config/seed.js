@@ -7,6 +7,7 @@
 import sqldb from '../sqldb';
 var Thing = sqldb.Thing;
 var GameImage = sqldb.Image;
+var GameClient = sqldb.ImageClient;
 
 Thing.sync()
   .then(function() {
@@ -60,4 +61,19 @@ GameImage.sync()
     path: '/uploads/Image2.jpg'
     
   }]);
+});
+  
+ GameClient.sync()
+.then(function(){
+  return GameClient.destroy({ where: {} });
+})
+.then(function(){
+  GameClient.bulkCreate([{
+    name: 'Vito Corleone',
+    imageId: 1
+  }, {
+    name: 'Luca Brasi',
+    imageId: 2
+  }]);
+  
 });
