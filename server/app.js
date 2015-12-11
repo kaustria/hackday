@@ -22,9 +22,10 @@ var socketio = require('socket.io')(server, {
 require('./config/socketio')(socketio);
 require('./config/express')(app);
 
+var imageSize = require('image-size');
 var multer = require('multer');
 var upload = multer({dest: './uploads/'});
-require('./routes')(app, upload, sqldb);
+require('./routes')(app, upload, sqldb, imageSize);
 // Start server
 function startServer() {
   server.listen(config.port, config.ip, function() {

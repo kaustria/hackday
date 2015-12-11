@@ -7,7 +7,7 @@
 import errors from './components/errors';
 import path from 'path';
 
-module.exports = function(app, upload, db) {
+module.exports = function(app, upload, db, imageSize) {
 
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
@@ -18,16 +18,17 @@ module.exports = function(app, upload, db) {
    .get(errors[404]);
   
   app.post('/images', upload.single('map'), function(req, res, next){
-  var image = db.Image;
-  image.create({
-    name: req.body['name'] === undefined ? req.file.originalName : req.body['name'],
-    path: req.body['path'] === undefined ? req.file.path : req.body['path'],
-    widthInPixels: req.body['widthInPixels'],
-    heightInPixels: req.body['heightInPixels'],
-    pixelsPerInchX: req.body['pixelsPerInchX'] === undefined ? null : req.body['pixelsPerInchX'],
-    pixelsPerInchY: req.body['pixelsPerInchY'] === undefined ? null : req.body['pixelsPerInchY'],
-    });
-    res.status(204).end();
+    var image = db.Image;
+    var dimensions = imageSize(req.file.path);
+    image.create({
+      name: req.body['name'] === undefined ? req.file.originalName : req.body['name'],
+      path: req.body['path'] === undefined ? req.file.path : req.body['path'],
+      widthInPixels: dimensions.width,
+      heightInPixels: dimensions.height,
+      pixelsPerInchX: req.body['pixelsPerInchX'] === undefined ? null : req.body['pixelsPerInchX'],
+      pixelsPerInchY: req.body['pixelsPerInchY'] === undefined ? null : req.body['pixelsPerInchY'],
+      });
+    res.status(201).end();
 })
 
   // All other routes should redirect to the index.html
