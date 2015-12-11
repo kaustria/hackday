@@ -6,6 +6,7 @@
 'use strict';
 import sqldb from '../sqldb';
 var Thing = sqldb.Thing;
+var GameImage = sqldb.Image;
 
 Thing.sync()
   .then(function() {
@@ -42,3 +43,21 @@ Thing.sync()
     }]);
   });
 
+GameImage.sync()
+.then(function(){
+  return GameImage.destroy({ where: {} });
+})
+.then(function(){
+  GameImage.bulkCreate([{
+    name: 'SeedImage1',
+    widthInPixels: 400,
+    heightInPixels:  400,
+    path: '/uploads/Image1.jpg'
+  }, {
+    name: 'SeedImage2',
+    widthInPixels: 100,
+    heightInPixels:  300,
+    path: '/uploads/Image2.jpg'
+    
+  }]);
+});

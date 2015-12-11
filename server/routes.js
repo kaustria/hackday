@@ -7,17 +7,22 @@
 import errors from './components/errors';
 import path from 'path';
 
-module.exports = function(app, upload) {
+module.exports = function(app, upload, db) {
 
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
+  app.use('/api/images', require('./api/image'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
   
-  app.post('/photo', upload.single('map'), function(req, res, next){
+  app.post('/images', upload.single('map'), function(req, res, next){
 	console.log('file', req.file);
 	console.log('body:', req.body);
+  
+  var image = db.Image;
+  image.create({name: req.file.originalname, path: req.file.path});
+  
 })
 
   // All other routes should redirect to the index.html

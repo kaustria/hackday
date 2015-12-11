@@ -23,8 +23,8 @@ require('./config/socketio')(socketio);
 require('./config/express')(app);
 
 var multer = require('multer');
-var upload = multer({dest: '/Users/kaustria/uploads/'});
-require('./routes')(app, upload);
+var upload = multer({dest: './uploads/'});
+require('./routes')(app, upload, sqldb);
 // Start server
 function startServer() {
   server.listen(config.port, config.ip, function() {
