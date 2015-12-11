@@ -80,6 +80,7 @@ exports.show = function(req, res) {
 
 // Creates a new Image in the DB
 exports.create = function(req, res) {
+  console.log(req.body);
   GameImage.create(req.body)
     .then(responseWithResult(res, 201))
     .catch(handleError(res));

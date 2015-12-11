@@ -18,12 +18,16 @@ module.exports = function(app, upload, db) {
    .get(errors[404]);
   
   app.post('/images', upload.single('map'), function(req, res, next){
-	console.log('file', req.file);
-	console.log('body:', req.body);
-  
   var image = db.Image;
-  image.create({name: req.file.originalname, path: req.file.path});
-  
+  image.create({
+    name: req.body['name'] === undefined ? req.file.originalName : req.body['name'],
+    path: req.body['path'] === undefined ? req.file.path : req.body['path'],
+    widthInPixels: req.body['widthInPixels'],
+    heightInPixels: req.body['heightInPixels'],
+    pixelsPerInchX: req.body['pixelsPerInchX'] === undefined ? null : req.body['pixelsPerInchX'],
+    pixelsPerInchY: req.body['pixelsPerInchY'] === undefined ? null : req.body['pixelsPerInchY'],
+    });
+    res.status(204).end();
 })
 
   // All other routes should redirect to the index.html
